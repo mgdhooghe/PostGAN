@@ -100,7 +100,8 @@ def call_calc(new,predicted_data=''):
             true_pos = tru_p/pos 
         else:
             true_pos = 0
-   
+ 
+  
         ## Y Neg count
         neg = len(new_y)-pos
         tru_n = len(pred_y[new_y==0])-sum(pred_y[new_y==0])  
@@ -154,8 +155,7 @@ def call_calc(new,predicted_data=''):
 def train(directory, protected, label, alpha, to_select ):
     ## GET ORIGINAL VARIABLES
     train_start = time.time()
-    #files = [f for f in os.listdir(directory) if f.endswith('.csv')]# if f.startswith('sample_data_')]
-    files = [f for f in os.listdir(directory) if f.startswith('sample_data_')]
+    files = [f for f in os.listdir(directory) if f.endswith('.csv')]
     print(files)
     file_num = len(files)
     priv = 1
