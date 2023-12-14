@@ -222,7 +222,7 @@ def train(directory, protected, label, alpha, to_select ):
     #### GET STARTING SAMPLE ACCURACY AND FAIRNESS ####
     f_test = 1
     a_test = 1 
-    try_num = 15
+    try_num = 10 
     noMore = 0
     
     ## SELECT
