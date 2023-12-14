@@ -100,8 +100,7 @@ def call_calc(new,predicted_data=''):
             true_pos = tru_p/pos 
         else:
             true_pos = 0
- 
-  
+   
         ## Y Neg count
         neg = len(new_y)-pos
         tru_n = len(pred_y[new_y==0])-sum(pred_y[new_y==0])  
@@ -222,7 +221,7 @@ def train(directory, protected, label, alpha, to_select ):
     #### GET STARTING SAMPLE ACCURACY AND FAIRNESS ####
     f_test = 1
     a_test = 1 
-    try_num = 10 
+    try_num = 5 
     noMore = 0
     
     ## SELECT
@@ -293,17 +292,14 @@ def train(directory, protected, label, alpha, to_select ):
        fno = 1-floss_nopred[best_ind]
        f_test = 1-floss[best_ind]
        a_test = aloss[best_ind]
-       print('Fairness: ',f_test)
-       print('Accuracy: ',a_test)
        # SAVE PROGRESS AND DATASET
        round = round + 1
        t = time.time() - start_time 
        
-       print("Round Time: ", time.time()-start_time)
-       print("Total Time: ", time.time()-train_start)
+       print('Round: [{}] - Fairness: {:.5f},\tAccuracy: {:.5f},\tRound Time: {:.5f},\tTotal Time: {:.5f}'.format(round, f_test, a_test, time.time()-start_time, time.time()-train_start))
 
 
-    final_directory = directory+'/'+data_name+'_selected_samples'
+    final_directory = directory+'/selected_samples'
 
     if not os.path.isdir(final_directory):
         os.makedirs(final_directory) 
@@ -314,7 +310,7 @@ def train(directory, protected, label, alpha, to_select ):
 
 def save_dataset(new_dataset_save, file_name, protected, ohe, og_file, round):
     ## Get Final Dataset
-    new_dataset_save = return_data(new_dataset_save, ohe)
+    new_dataset_save = return_data(new_dataset_save, ohe, og_data)
     new_dataset_save = new_dataset_save.rename(columns={"protected":protected,"predicted":predicted})
     new_dataset_save[protected]=np.where(new_dataset_save[protected]==1, 'privileged', 'unprivileged')
     new_dataset_save[predicted]=np.where(new_dataset_save[predicted]==1, 'preferred', 'unpreferred') 
@@ -331,23 +327,21 @@ if __name__ == "__main__":
     try:
         directory = sys.argv[1]
         print('Synthetic Data Directory: ',directory)
-        data_name = sys.argv[2]
-        print('Dataset Name: ',data_name)
-        training_file = sys.argv[3]
+        training_file = sys.argv[2]
         print('Training Dataset File: ',training_file)
-        protected = sys.argv[4]
+        protected = sys.argv[3]
         print('Protected Feature: ',protected)
-        privileged = sys.argv[5]
+        privileged = sys.argv[4]
         print('Privileged Value: ',privileged)
-        predicted = sys.argv[6]
+        predicted = sys.argv[5]
         print('Predicted Feature: ',predicted)
-        preferred = sys.argv[7]
+        preferred = sys.argv[6]
         print('Preferred Value: ',preferred)
-        select_percent = sys.argv[8]
+        select_percent = sys.argv[7]
         print('Percent of Data Selected: ',select_percent)
         select_percent = float(select_percent)
     except:
-        print('Please supply the following arguments: [directory] [dataset_name] [training_file] [protected feature] [privileged value] [predicted feature] [preferred value] [selected_data_percentage (ex. .5)]')  
+        print('Please supply the following arguments: [directory] [training_file] [protected feature] [privileged value] [predicted feature] [preferred value] [selected_data_percentage (ex. .5)]')  
         exit()
     
     alpha = 1
