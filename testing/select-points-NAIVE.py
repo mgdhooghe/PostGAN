@@ -44,7 +44,8 @@ def call_calc(new,predicted_data=''):
         else:
             true_pos = 0
             print("ALL 0")
-   
+ 
+  
         ## Y Neg count
         neg = len(new_y)-pos
         tru_n = len(pred_y[new_y==0])-sum(pred_y[new_y==0])  
