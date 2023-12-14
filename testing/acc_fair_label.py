@@ -239,7 +239,8 @@ def calculate(all_data, og_file, og_test_data, ohe, prot_var, values="all"):
 		gen_reg, data = train_on_data(all_data, return_test=True, split=True)
 		predicted_data = predict_output(data, gen_reg) #predict test data output
 
-		###ORGANIZE DATA TRAINED ON GENERATED AND TESTED ON GENERATED	
+		###ORGANIZE DATA TRAINED ON GENERATED AND TESTED ON GENERATED
+	
 		dataset = datasets.BinaryLabelDataset(favorable_label=preferred, unfavorable_label=unpreferred, df=data, label_names=[predicted], protected_attribute_names=[protected], instance_weights_name = weights_name)
 		predicted_dataset = datasets.BinaryLabelDataset(favorable_label=preferred, unfavorable_label=unpreferred, df=predicted_data, label_names=[predicted], protected_attribute_names=[protected], instance_weights_name = weights_name)
 		classMetrics = metrics.ClassificationMetric(dataset, predicted_dataset, privileged_groups=priv_groups, unprivileged_groups=unpriv_groups)	
